@@ -44,10 +44,6 @@ class ModalIndicator extends Component {
         var numberProposed = this.state.numberProposed;
         if (numberProposed[0] !== "_" && numberProposed[2] !== "_"
             && numberProposed[1] !== "_" && numberProposed[3] !== "_") {
-            this.setState({
-                showNumber: [true, true, true, true, true, true, true, true, true, true],
-                numberProposed: ["_", "_", "_", "_"]
-            })
             this.hide()
             this.props.refreshNumber(this.state.numberProposed)
         }

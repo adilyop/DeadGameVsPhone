@@ -171,15 +171,12 @@ class Dashboard extends Component {
       second: 0,
       curTime: "00:00:00"
     })
-    guesses = [];
     var randomNumber = this.generateNumber();
     this.setState({
       backgroundColorNumber: "grey",
       randomNumber: "" + randomNumber,
       myListNumbers: [],
-      phoneListNumbers: [],
-      myNumber: ["", "", "", ""],
-      showNumber: [true, true, true, true, true, true, true, true, true, true],
+      phoneListNumbers: []
     });
   }
 
@@ -435,6 +432,7 @@ class Dashboard extends Component {
         setTimeout(() => {
           this.refs._scrollView1.scrollTo({ x: 0, y: this.state.scrollViewHeight2, Animated: true });
         }, 1500);
+
       }
     }
   }
@@ -457,7 +455,7 @@ class Dashboard extends Component {
         backgroundColorScrollviewMe: '#1abc9c',
         showModalWin: true,
         round: this.state.round + 1,
-        userWin: this.state.userWin + 1
+        userWin: this.state.userWin + 1,
       })
       guesses = []
       return true;
@@ -543,7 +541,6 @@ class Dashboard extends Component {
     this.setState({
       myNumber: myNumber
     });
-    this._replay();
   };
   render() {
     var self = this;
@@ -831,9 +828,9 @@ class Dashboard extends Component {
         backgroundColorScrollviewPhone: '#1abc9c',
         showModalLose: true,
         round: this.state.round + 1,
-        phoneWin: this.state.phoneWin + 1
+        phoneWin: this.state.phoneWin + 1,
       })
-      guesses = [];
+      guesses = []
     } else {
       this.setState({
         rows: this.state.rows + 1
