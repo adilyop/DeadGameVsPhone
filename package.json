@@ -1,0 +1,30 @@
+{
+  "name": "test0",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.44.0",
+    "react-native-android-sqlite": "^0.1.6",
+    "react-native-network-info": "^2.1.0",
+    "react-native-router-flux": "^3.39.1",
+    "react-native-scrollable-tab-view": "^0.6.6",
+    "react-native-shadow": "^1.1.2",
+    "react-native-share": "^1.0.20",
+    "react-native-vector-icons": "^4.1.1",
+    "react-native-view-shot": "^1.9.1"
+  },
+  "devDependencies": {
+    "babel-jest": "20.0.1",
+    "babel-preset-react-native": "1.9.2",
+    "jest": "20.0.1",
+    "react-test-renderer": "16.0.0-alpha.6"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
