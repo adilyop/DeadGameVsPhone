@@ -38,6 +38,8 @@ import ModalWin from './ModalWin';
 import ModalLose from './ModalLose';
 import ModalSolution from './ModalSolution';
 import ModalIndicator from './ModalIndicator';
+
+var Sound = require('react-native-sound');
 let self;
 
 class Dashboard extends Component {
@@ -115,6 +117,7 @@ class Dashboard extends Component {
     var randomNumber = this.generateNumber()
     this.setState({ randomNumber: "" + randomNumber })
 
+
   }
   componentDidMount() {
     var self = this;
@@ -164,6 +167,12 @@ class Dashboard extends Component {
   }
 
   _replay() {
+
+
+
+
+
+
     this.refs._scrollView1.scrollTo({ x: 0, y: 0, Animated: true });
     this.refs._scrollView2.scrollTo({ x: 0, y: 0, Animated: true });
     this.setState({
@@ -175,8 +184,16 @@ class Dashboard extends Component {
     this.setState({
       backgroundColorNumber: "grey",
       randomNumber: "" + randomNumber,
-      myListNumbers: [],
-      phoneListNumbers: []
+      myListNumbers: [{
+        numberProposed: "Num",
+        mort: "B",
+        blesse: "C",
+      }],
+      phoneListNumbers: [{
+        numberProposed: "Num",
+        mort: "B",
+        blesse: "C",
+      }]
     });
   }
 
@@ -348,8 +365,9 @@ class Dashboard extends Component {
     var showNumber = this.state.showNumber;
     var number = listNumberProposed[position]
     if (number !== "_") {
-
-
+      var whoosh = new Sound('sound_back.wav', Sound.MAIN_BUNDLE, (error) => {
+        whoosh.play()
+      });
       showNumber[number] = true;
       listNumberProposed[position] = "_";
       this.setState({
@@ -369,6 +387,9 @@ class Dashboard extends Component {
         numberProposed: numberProposed,
         showNumber: showNumber
       })
+      var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+        whoosh.play()
+      });
     }
     else if (numberProposed[1] === "_") {
       var showNumber = this.state.showNumber;
@@ -378,6 +399,9 @@ class Dashboard extends Component {
         numberProposed: numberProposed,
         showNumber: showNumber
       })
+      var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+        whoosh.play()
+      });
     }
     else if (numberProposed[2] === "_") {
       var showNumber = this.state.showNumber;
@@ -387,6 +411,9 @@ class Dashboard extends Component {
         numberProposed: numberProposed,
         showNumber: showNumber
       })
+      var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+        whoosh.play()
+      });
     }
     else if (numberProposed[3] === "_") {
       var showNumber = this.state.showNumber;
@@ -396,6 +423,9 @@ class Dashboard extends Component {
         numberProposed: numberProposed,
         showNumber: showNumber
       })
+      var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+        whoosh.play()
+      });
     }
   }
 
@@ -457,7 +487,10 @@ class Dashboard extends Component {
         round: this.state.round + 1,
         userWin: this.state.userWin + 1,
       })
-      guesses = []
+      guesses = [];
+      var whoosh = new Sound('sound_win.wav', Sound.MAIN_BUNDLE, (error) => {
+        whoosh.play()
+      });
       return true;
     } else {
       this.setState({
@@ -541,6 +574,7 @@ class Dashboard extends Component {
     this.setState({
       myNumber: myNumber
     });
+    this._replay();
   };
   render() {
     var self = this;
@@ -830,7 +864,10 @@ class Dashboard extends Component {
         round: this.state.round + 1,
         phoneWin: this.state.phoneWin + 1,
       })
-      guesses = []
+      guesses = [];
+      var whoosh = new Sound('sound_lose.wav', Sound.MAIN_BUNDLE, (error) => {
+        whoosh.play()
+      });
     } else {
       this.setState({
         rows: this.state.rows + 1

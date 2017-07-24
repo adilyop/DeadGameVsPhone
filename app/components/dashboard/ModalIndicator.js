@@ -14,6 +14,7 @@ var width_window = width;
 let height_window = height - 25;
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
+var Sound = require('react-native-sound');
 class ModalIndicator extends Component {
     constructor(props) {
         super(props);
@@ -58,6 +59,9 @@ class ModalIndicator extends Component {
                 numberProposed: numberProposed,
                 showNumber: showNumber
             })
+            var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+                whoosh.play()
+            });
         }
         else if (numberProposed[1] === "_") {
             var showNumber = this.state.showNumber;
@@ -67,6 +71,9 @@ class ModalIndicator extends Component {
                 numberProposed: numberProposed,
                 showNumber: showNumber
             })
+            var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+                whoosh.play()
+            });
         }
         else if (numberProposed[2] === "_") {
             var showNumber = this.state.showNumber;
@@ -76,6 +83,9 @@ class ModalIndicator extends Component {
                 numberProposed: numberProposed,
                 showNumber: showNumber
             })
+            var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+                whoosh.play()
+            });
         }
         else if (numberProposed[3] === "_") {
             var showNumber = this.state.showNumber;
@@ -85,6 +95,9 @@ class ModalIndicator extends Component {
                 numberProposed: numberProposed,
                 showNumber: showNumber
             })
+            var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
+                whoosh.play()
+            });
         }
     }
     _renderNumber(number) {
@@ -123,6 +136,9 @@ class ModalIndicator extends Component {
         var number = listNumberProposed[position]
         if (number !== "_") {
 
+            var whoosh = new Sound('sound_back.wav', Sound.MAIN_BUNDLE, (error) => {
+                whoosh.play()
+            });
 
             showNumber[number] = true;
             listNumberProposed[position] = "_";
