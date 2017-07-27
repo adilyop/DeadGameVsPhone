@@ -15,6 +15,12 @@ import { StyleSheet } from 'react-native';
 import Share, { Button } from 'react-native-share';
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded
+} from 'react-native-admob'
 var {width, height} = Dimensions.get('window');
 
 export default class ShareSocial extends Component {
@@ -28,7 +34,53 @@ export default class ShareSocial extends Component {
         this.setState({
             shareFile: shareContent
         });
+
+
+
+        AdMobRewarded.setTestDeviceID('EMULATOR');
+        AdMobRewarded.setAdUnitID('ca-app-pub-1835572944842794/9605440591');
+
+        AdMobRewarded.addEventListener('rewardedVideoDidRewardUser',
+            (type, amount) => console.log('rewardedVideoDidRewardUser', type, amount)
+        );
+        AdMobRewarded.addEventListener('rewardedVideoDidLoad',
+            () => console.log('rewardedVideoDidLoad')
+        );
+        AdMobRewarded.addEventListener('rewardedVideoDidFailToLoad',
+            (error) => console.log('rewardedVideoDidFailToLoad', error)
+        );
+        AdMobRewarded.addEventListener('rewardedVideoDidOpen',
+            () => console.log('rewardedVideoDidOpen')
+        );
+        AdMobRewarded.addEventListener('rewardedVideoDidClose',
+            () => {
+                console.log('rewardedVideoDidClose');
+                AdMobRewarded.requestAd((error) => error && console.log(error));
+            }
+        );
+        AdMobRewarded.addEventListener('rewardedVideoWillLeaveApplication',
+            () => console.log('rewardedVideoWillLeaveApplication')
+        );
+
+        AdMobRewarded.requestAd((error) => error && console.log(error));
+        this.showRewarded();
     }
+
+
+
+
+    ////
+    componentWillUnmount() {
+        AdMobRewarded.removeAllListeners();
+    }
+
+    showRewarded() {
+        AdMobRewarded.showAd((error) => error && console.log(error));
+    }
+
+
+
+
     playPhone() {
         Actions.DashboardPhone();
     };
@@ -57,6 +109,7 @@ export default class ShareSocial extends Component {
 
                 </Image>
 
+
                 <TouchableOpacity style={styles.playPhone}
                     onPress={() => this.playPhone()}>
 
@@ -66,9 +119,9 @@ export default class ShareSocial extends Component {
                     </View>
 
                     <View style={styles.flex}>
-                        
-            <Image style={styles.image1}
-                source={require('../../images/brain.png')}></Image>
+
+                        <Image style={styles.image1}
+                            source={require('../../images/brain.png')}></Image>
                     </View>
                 </TouchableOpacity>
 
@@ -80,9 +133,9 @@ export default class ShareSocial extends Component {
                         <Text style={styles.footerTitle} >Vs Time</Text>
                     </View>
                     <View style={styles.flex}>
-                        
-            <Image style={styles.image2}
-                source={require('../../images/chrono.png')}></Image>
+
+                        <Image style={styles.image2}
+                            source={require('../../images/chrono.png')}></Image>
                     </View>
                 </TouchableOpacity>
 

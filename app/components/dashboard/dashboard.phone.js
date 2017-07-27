@@ -38,6 +38,12 @@ import ModalWin from './ModalWin';
 import ModalLose from './ModalLose';
 import ModalSolution from './ModalSolution';
 import ModalIndicator from './ModalIndicator';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded
+} from 'react-native-admob'
 
 var Sound = require('react-native-sound');
 let self;
@@ -367,6 +373,7 @@ class Dashboard extends Component {
     if (number !== "_") {
       var whoosh = new Sound('sound_back.wav', Sound.MAIN_BUNDLE, (error) => {
         whoosh.play()
+        whoosh.release();
       });
       showNumber[number] = true;
       listNumberProposed[position] = "_";
@@ -389,6 +396,7 @@ class Dashboard extends Component {
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
         whoosh.play()
+        whoosh.release();
       });
     }
     else if (numberProposed[1] === "_") {
@@ -401,6 +409,7 @@ class Dashboard extends Component {
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
         whoosh.play()
+        whoosh.release();
       });
     }
     else if (numberProposed[2] === "_") {
@@ -413,6 +422,7 @@ class Dashboard extends Component {
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
         whoosh.play()
+        whoosh.release();
       });
     }
     else if (numberProposed[3] === "_") {
@@ -425,6 +435,7 @@ class Dashboard extends Component {
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
         whoosh.play()
+        whoosh.release();
       });
     }
   }
@@ -445,7 +456,11 @@ class Dashboard extends Component {
           showIndicator: true,
           colorText: "red"
         })
-
+        var whoosh = new Sound('sound_false.mp3', Sound.MAIN_BUNDLE, (error) => {
+          whoosh.play((success) => {
+            whoosh.release();
+          });
+        });
         setTimeout(function () {
           self.setState({
             colorText: "white"
@@ -460,7 +475,7 @@ class Dashboard extends Component {
         }, 1000);
 
         setTimeout(() => {
-          this.refs._scrollView1.scrollTo({ x: 0, y: this.state.scrollViewHeight2, Animated: true });
+          this.refs._scrollView2.scrollTo({ x: 0, y: this.state.scrollViewHeight2, Animated: true });
         }, 1500);
 
       }
@@ -490,6 +505,7 @@ class Dashboard extends Component {
       guesses = [];
       var whoosh = new Sound('sound_win.wav', Sound.MAIN_BUNDLE, (error) => {
         whoosh.play()
+        whoosh.release();
       });
       return true;
     } else {
@@ -587,17 +603,22 @@ class Dashboard extends Component {
       >
 
         <ModalIndicator
+          animationType={"fade"}
           visible={this.state.showModalIndicator}
           toggleModalIndicator={this._toggleModalIndicator.bind(this)}
           refreshNumber={this.refreshNumber.bind(this)}
         />
         <ModalWin
+          animationType={"fade"}
           visible={this.state.showModalWin}
           toggleModalWin={this._toggleModalWin.bind(this)}
+          share={this._share.bind(this)}
         />
         <ModalLose
+          animationType={"fade"}
           visible={this.state.showModalLose}
           toggleModalLose={this._toggleModalLose.bind(this)}
+          share={this._share.bind(this)}
         />
         <View style={[styles.containerHeader]}
         //source={require('../../images/header.png')}
@@ -681,7 +702,7 @@ class Dashboard extends Component {
                     onLayout={ev => this.setState({ scrollViewHeight1: ev.nativeEvent.layout.height + 30 })}
 
                     dataSource={this.dataSource.cloneWithRows(this.state.myListNumbers)}
-                    renderRow={(rowData, sectionID, rowID) => this._renderNumbersPhone(rowData, sectionID, rowID)}
+                    renderRow={(rowData, sectionID, rowID) => this._renderNumbers(rowData, sectionID, rowID)}
                   />
                 </ScrollView>
               </View>
@@ -866,7 +887,8 @@ class Dashboard extends Component {
       })
       guesses = [];
       var whoosh = new Sound('sound_lose.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play()
+        whoosh.play();
+        whoosh.release();
       });
     } else {
       this.setState({

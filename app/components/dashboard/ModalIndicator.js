@@ -14,6 +14,12 @@ var width_window = width;
 let height_window = height - 25;
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded
+} from 'react-native-admob'
 var Sound = require('react-native-sound');
 class ModalIndicator extends Component {
     constructor(props) {
@@ -60,7 +66,9 @@ class ModalIndicator extends Component {
                 showNumber: showNumber
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-                whoosh.play()
+                whoosh.play((success) => {
+                whoosh.release();
+                });
             });
         }
         else if (numberProposed[1] === "_") {
@@ -72,7 +80,9 @@ class ModalIndicator extends Component {
                 showNumber: showNumber
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-                whoosh.play()
+                whoosh.play((success) => {
+                whoosh.release();
+                });
             });
         }
         else if (numberProposed[2] === "_") {
@@ -84,7 +94,9 @@ class ModalIndicator extends Component {
                 showNumber: showNumber
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-                whoosh.play()
+                whoosh.play((success) => {
+                whoosh.release();
+                });
             });
         }
         else if (numberProposed[3] === "_") {
@@ -96,7 +108,9 @@ class ModalIndicator extends Component {
                 showNumber: showNumber
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-                whoosh.play()
+                whoosh.play((success) => {
+                whoosh.release();
+                });
             });
         }
     }
@@ -137,7 +151,9 @@ class ModalIndicator extends Component {
         if (number !== "_") {
 
             var whoosh = new Sound('sound_back.wav', Sound.MAIN_BUNDLE, (error) => {
-                whoosh.play()
+                whoosh.play((success) => {
+                whoosh.release();
+                });
             });
 
             showNumber[number] = true;
@@ -151,7 +167,7 @@ class ModalIndicator extends Component {
     render() {
         return (
             <Modal
-                animationType={"slide"}
+                animationType={"fade"}
                 transparent={true}
                 visible={this.props.visible}
                 onRequestClose={() => undefined}
@@ -207,9 +223,15 @@ class ModalIndicator extends Component {
 
 
                         </View>
+
+
+                        <View style={styles.containerempty}>
+                        </View>
+
+
                         <View style={styles.containerButton}>
                             <TouchableOpacity onPress={() => this.play()} style={styles.buttonPlay}>
-                                <Text > Play </Text>
+                                <Text style={styles.playText} > Play </Text>
                             </TouchableOpacity>
                         </View>
                     </Image>
@@ -217,6 +239,11 @@ class ModalIndicator extends Component {
 
 
                     <View style={styles.containerFooter}>
+                        <AdMobBanner 
+                    bannerSize="Banner"
+                    adUnitID="ca-app-pub-1835572944842794/6748215105"
+                    testDeviceID="0123456789ABCDEF"
+                    didFailToReceiveAdWithError={this.bannerError} />
                     </View>
                 </View>
 
@@ -242,14 +269,13 @@ const styles = StyleSheet.create({
         width: width,
     },
     containerModal: {
-        backgroundColor: 'rgba(500,500, 500, 0.2)',
         height: width - 20,
         width: width - 20,
         resizeMode: "stretch",
         flexDirection: 'column'
     },
     containerFooter: {
-        backgroundColor: 'rgba(500,500, 500, 0.2)',
+        backgroundColor: 'rgba(500,500, 500, 1)',
         height: height / 5,
         width: width,
     },
@@ -257,18 +283,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(500,500, 500, 0.8)',
-        flex: 4
+        flex: 4,
     },
     containerTitle: {
-        backgroundColor: 'rgba(500,2, 100, 0.8)',
         justifyContent: 'center',
         alignItems: 'center',
         flex: 2
     },
     containerMessage: {
-        backgroundColor: 'rgba(500,2, 0, 0.8)',
-        flex: 6,
+        flex: 5,
+        flexDirection: 'column'
+    },
+    containerempty: {
+        flex: 1,
         flexDirection: 'column'
     },
     buttonPlay: {
@@ -278,7 +305,7 @@ const styles = StyleSheet.create({
         width: 70,
         borderRadius: 10,
         height: 40,
-        backgroundColor: 'green',
+        backgroundColor: '#a76a6a',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -287,13 +314,16 @@ const styles = StyleSheet.create({
         width: 70,
         borderRadius: 10,
         height: 40,
-        backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center'
     },
     headerTitle: {
         fontWeight: 'bold',
         fontSize: 20,
+    },
+    playText: {
+        fontWeight: 'bold',
+        fontSize: 15,
     },
     containerNumbersRow1: {
         flex: 1,
@@ -302,6 +332,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     containerNumbersRow2: {
+        margin: 3,
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',

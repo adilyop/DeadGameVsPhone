@@ -14,6 +14,12 @@ let height_window = height - 25;
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from './modalWin.styles';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded
+} from 'react-native-admob'
 class ModalLose extends Component {
     constructor(props) {
         super(props);
@@ -52,16 +58,16 @@ class ModalLose extends Component {
 
     share() {
 
-            this.props.toggleModalLose();
-            this.props.share("header");
+        this.props.toggleModalLose();
+        this.props.share("header");
     }
     start() {
-            this.props.toggleModalLose();
+        this.props.toggleModalLose();
     }
     render() {
         return (
             <Modal
-                animationType={"slide"}
+                animationType={"fade"}
                 transparent={true}
                 visible={this.props.visible}
                 onShow={this._timerModal.bind(this)}
@@ -84,12 +90,17 @@ class ModalLose extends Component {
 
 
                         <Image style={[styles.record]}
-                            //source={require('../../images/win.png')}
-                            >
+                        //source={require('../../images/win.png')}
+                        >
                             <Text style={styles.TextNumber}> {this.props.randomNumber} </Text>
                             <Text style={styles.TextRecord}> {this.props.time} </Text>
                         </Image>
 
+                        <AdMobBanner
+                            bannerSize="Banner"
+                            adUnitID="ca-app-pub-1835572944842794/6748215105"
+                            testDeviceID="0123456789ABCDEF"
+                            didFailToReceiveAdWithError={this.bannerError} />
 
                         <View style={styles.modalSecondLignButton}>
                             <TouchableOpacity
@@ -107,7 +118,10 @@ class ModalLose extends Component {
                 </View>
 
 
-                <View style={styles.containerFooterError}></View>
+                <View style={styles.containerFooterError}>
+
+
+                </View>
 
 
             </Modal>
