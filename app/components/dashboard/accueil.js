@@ -63,7 +63,7 @@ export default class ShareSocial extends Component {
         );
 
         AdMobRewarded.requestAd((error) => error && console.log(error));
-        this.showRewarded();
+        //this.showRewarded();
     }
 
 
@@ -95,8 +95,10 @@ export default class ShareSocial extends Component {
     };
     render() {
         return (
+            <View style={styles.flex}>
             <Image style={styles.container}
-                source={require('../../images/back_blue.png')}>
+             source={require('../../images/final_backgroundaccueil.png')}
+            >
 
 
                 <Image style={styles.iconcontainer}
@@ -118,40 +120,51 @@ export default class ShareSocial extends Component {
                         <Text style={styles.footerTitle} >Vs Phone</Text>
                     </View>
 
-                    <View style={styles.flex}>
+                    <View style={styles.flexicon}>
 
-                        <Image style={styles.image1}
-                            source={require('../../images/brain.png')}></Image>
+                        <View style={styles.cercle}>
+                        <Icon name="md-game-controller-b" color='#9b6ab7' size={50}></Icon>
+                        </View>
                     </View>
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.playAlone}
+                <TouchableOpacity style={styles.playPhone}
                     onPress={() => this.playAlone()}>
                     <View style={styles.flex}>
-                        <Text style={styles.headerSubTitle} >Play</Text>
+                        <Text style={styles.headerTitle} >Play</Text>
                         <Text style={styles.footerTitle} >Vs Time</Text>
                     </View>
-                    <View style={styles.flex}>
-
-                        <Image style={styles.image2}
-                            source={require('../../images/chrono.png')}></Image>
+                    <View style={styles.flexicon}>
+                        <View style={styles.cercle}>
+                        <Icon name="md-timer" color='#9b6ab7' size={50}></Icon>
+                        </View>
                     </View>
                 </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.howToPlay}
+                <TouchableOpacity style={styles.playPhone}
                     onPress={() => this.howToplay()}>
-                    <Text style={styles.headerTitleInstruction} >Rules</Text>
+                    <View style={styles.flex}>
+                        <Text style={styles.headerTitle} >How to</Text>
+                        <Text style={styles.footerTitle} >play</Text>
+                    </View>
+                    <View style={styles.flexicon}>
+                        <View style={styles.cercle}>
+                        <Icon name="md-help-circle" color='#9b6ab7' size={50}></Icon>
+                        </View>
+                    </View>
                 </TouchableOpacity>
 
             </Image>
+             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#9ac1ff',
         height: height,
         width: width,
         flexDirection: 'column',
@@ -194,97 +207,55 @@ const styles = StyleSheet.create({
         backgroundColor: '#AAA'
     },
     flex: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: "center",
+    },
+    flexicon: {
+        borderRadius: 20,
+        height: 80,
+        backgroundColor: '#62a3cf',
         flex: 1,
         justifyContent: 'center',
         alignItems: "center",
     },
-    imageContainer: {
-        flex: 1,
-        width: 250,
-        alignSelf: 'center',
-        backgroundColor: 'white',
-        borderRadius: 5,
-        marginBottom: 50
-    },
-    campaignName: {
-        backgroundColor: 'white',
-        color: '#333',
-        fontSize: 22,
-        alignSelf: 'center',
-        fontFamily: 'sans-serif-light',
-        fontWeight: 'bold',
-        paddingTop: 18,
-        paddingBottom: 20
-    },
-
-    settingShare: {
-        marginLeft: 10,
+    cercle: {
+        flexDirection: 'row',
+        borderRadius: 35,
+        height: 60,
+        width: 60,
+        backgroundColor: '#533763',
+        justifyContent: 'center',
+        alignItems: "center",
     },
     playPhone: {
         flexDirection: 'row',
-        borderWidth: 5,
-        borderColor: '#62a3cf',
-        justifyContent: 'center',
-        alignItems: "center",
-        borderRadius: 20,
-        backgroundColor: '#1b6a9f',
-        height: 100,
-        width: 200,
-        margin: 5
-    },
-    playAlone: {
-        flexDirection: 'row',
         borderWidth: 4,
         borderColor: '#62a3cf',
-        justifyContent: 'center',
         alignItems: "center",
         borderRadius: 20,
         backgroundColor: '#1b6a9f',
-        height: 70,
-        width: 150,
+        height: 80,
+        width: 220,
         margin: 5
     },
-    howToPlay: {
-        borderWidth: 3,
-        borderColor: '#62a3cf',
-        justifyContent: 'center',
-        alignItems: "center",
-        borderRadius: 20,
-        backgroundColor: '#3e81ae',
-        height: 60,
-        width: 120,
-        margin: 5
-    },
-    exit: {
-        borderWidth: 2,
-        borderColor: '#62a3cf',
-        justifyContent: 'center',
-        alignItems: "center",
-        borderRadius: 20,
-        backgroundColor: '#3e81ae',
-        height: 50,
-        width: 80,
-        margin: 15
-    },
-
-
     headerTitle: {
-        color: '#000080',
+        color: '#533763',
         fontWeight: 'bold',
-        fontSize: 35,
+        fontSize: 30,
     },
     headerSubTitle: {
-        color: '#000080',
+        color: '#9b6ab7',
         fontWeight: 'bold',
         fontSize: 25,
     },
     footerTitle: {
-        color: 'black',
+        color: '#103e5e',
         fontWeight: 'bold',
-        fontSize: 10,
+        fontSize: 15,
     },
     headerTitleInstruction: {
-        color: '#000080',
+        color: '#9b6ab7',
         fontWeight: 'bold',
         fontSize: 20,
     },

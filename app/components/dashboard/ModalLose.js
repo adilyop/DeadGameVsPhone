@@ -49,7 +49,7 @@ class ModalLose extends Component {
             Animated.timing(  // Animate over time
                 self.state.widthView,  // The animated value to drive
                 {
-                    toValue: width,  // Animate to opacity: 1, or fully opaque
+                    toValue: width-20,  // Animate to opacity: 1, or fully opaque
                 }).start();
 
         }, 1500);
@@ -58,7 +58,6 @@ class ModalLose extends Component {
 
     share() {
 
-        this.props.toggleModalLose();
         this.props.share("header");
     }
     start() {
@@ -73,7 +72,9 @@ class ModalLose extends Component {
                 onShow={this._timerModal.bind(this)}
                 onRequestClose={() => undefined}
             >
-                <View style={styles.header}>
+
+                <View style={styles.globalModal}>
+                <View style={styles.header}> 
                 </View>
                 <View style={styles.modal}>
                     <View style={styles.modalLign}>
@@ -83,46 +84,55 @@ class ModalLose extends Component {
                         </Image>
                     </View>
                     <Animated.View
-                        style={[styles.modalSecondLign, { height: this.state.heightView, width: this.state.widthView }]}
+                            style={[styles.modalSecondCarreLose, { height: this.state.heightView, width: this.state.widthView }]}
 
-                    >
-
-
-
-                        <Image style={[styles.record]}
-                        //source={require('../../images/win.png')}
                         >
-                            <Text style={styles.TextNumber}> {this.props.randomNumber} </Text>
-                            <Text style={styles.TextRecord}> {this.props.time} </Text>
-                        </Image>
+                            <View style={styles.modalSecondCarreUpLose}>
 
-                        <AdMobBanner
-                            bannerSize="Banner"
-                            adUnitID="ca-app-pub-1835572944842794/6748215105"
-                            testDeviceID="0123456789ABCDEF"
-                            didFailToReceiveAdWithError={this.bannerError} />
+                                <Icon name="md-contact" color='#fff' size={40} ></Icon>
 
-                        <View style={styles.modalSecondLignButton}>
-                            <TouchableOpacity
-                                style={styles.buttonRestart}
+                                <View style={styles.columnScore}>
+                                    <Text style={styles.Textscore }>  {this.props.userWin} : {this.props.phoneWin}  </Text>
+                                    <Text  style={styles.TextRound} >{this.props.round}</Text>
+                                </View>
 
-                                onPress={() => this.start()}>
-                                <Text style={styles.TextRestart}>RESTART</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.buttonShare} onPress={() => this.share()}>
-                                <Text style={styles.TextShare}>SHARE</Text>
-                            </TouchableOpacity>
-                        </View>
+                                <Icon name="ios-ionitron" color='#fff' size={40} ></Icon>
+                            </View>
 
-                    </Animated.View >
+
+                            <View style={styles.modalSecondCarreDownLose}>
+
+                                <View style={styles.record}>
+                                <Image style={[styles.recordImage]}
+                                    source={require('../../images/youlose.png')}
+                                >
+                                </Image>
+                                </View>
+                                <View style={styles.modalSecondLignButton}>
+                                    <TouchableOpacity
+                                        style={styles.buttonRestart}
+
+                                        onPress={() => this.start()}>
+                                        <Text style={styles.TextRestart}>RESTART</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.buttonShare} onPress={() => this.share()}>
+                                        <Text style={styles.TextShare}>SHARE</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                            </View>
+                        </Animated.View >
                 </View>
 
 
                 <View style={styles.containerFooterError}>
-
-
-                </View>
-
+                        <AdMobBanner style={styles.containerFooterError}
+                            bannerSize="Banner"
+                            adUnitID="ca-app-pub-1835572944842794/6748215105"
+                            testDeviceID="0123456789ABCDEF"
+                            didFailToReceiveAdWithError={this.bannerError} />
+                            </View>
+                            </View>
 
             </Modal>
         );

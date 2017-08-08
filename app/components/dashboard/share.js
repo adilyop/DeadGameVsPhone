@@ -28,8 +28,8 @@ export default class ShareSocial extends Component {
     componentWillMount() {
         let shareContent = this.props.shareContent;
         this.setState({
-                shareFile: shareContent
-            });
+            shareFile: shareContent
+        });
     }
     onPrevious() {
         Actions.pop();
@@ -38,14 +38,14 @@ export default class ShareSocial extends Component {
         let shareOptions = {
             title: "Share this link",
             message: "Help me to resolve this",
-            url: "google play Guess the number",
-            subject: "Share Link" //  for email
+            url: "google play Master Mind",
+            subject: "Master Mind" //  for email
         };
         let shareImageBase64 = {
             title: "Try To guess this number in the least attempts",
             message: "Hi! ",
-            url: "data:image/png;base64,"+this.state.shareFile,
-            subject: "Guess the Number" //  for email
+            url: "data:image/png;base64," + this.state.shareFile,
+            subject: "Master Mind" //  for email
         };
         return (
             <View style={styles.container}>
@@ -58,7 +58,7 @@ export default class ShareSocial extends Component {
                             SHARE
                     </Text>
                         <TouchableOpacity style={styles.settingShare}>
-                            <Icon name="ios-arrow-back" color='#2c3e50' size={40} > </Icon>
+                            <Icon name="ios-arrow-back" color='#1b6a9f' size={40} > </Icon>
                         </TouchableOpacity>
                     </View>
                     <Button iconSrc={{ uri: TWITTER_ICON }}
@@ -195,16 +195,16 @@ const styles = StyleSheet.create({
 
 
     headerTitle: {
-        color: '#90949c',
+        color: '#62a3cf',
         fontWeight: 'bold',
-        fontSize: 30,
+        fontSize: 25,
     },
     subHeader1: {
         justifyContent: 'space-between',
         alignItems: "center",
         flexDirection: 'row',
         height: 60,
-        backgroundColor: '#2c3e50'
+        backgroundColor: '#1b6a9f'
     },
     headerContainer: {
         flex: 1,

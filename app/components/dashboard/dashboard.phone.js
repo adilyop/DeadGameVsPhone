@@ -39,10 +39,10 @@ import ModalLose from './ModalLose';
 import ModalSolution from './ModalSolution';
 import ModalIndicator from './ModalIndicator';
 import {
-    AdMobBanner,
-    AdMobInterstitial,
-    PublisherBanner,
-    AdMobRewarded
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded
 } from 'react-native-admob'
 
 var Sound = require('react-native-sound');
@@ -57,9 +57,10 @@ class Dashboard extends Component {
 
     this.state = {
       showIndicator: false,
-      Amkhib: "Amkhib",
+      Amkhib: "Phone",
       colorText: "white",
       showModalIndicator: false,
+      showReplay: false, // false
       showModalWin: false,
       showModalLose: false,
       isHidePhoneView: false,
@@ -79,6 +80,7 @@ class Dashboard extends Component {
         result: "base64",
         snapshotContentContainer: false,
       },
+      VS: "VS",
       curTime: "00:00:00",
       curTimeInfo: "00:00:00",
       roundInfo: 0,
@@ -104,8 +106,6 @@ class Dashboard extends Component {
       backgroundColorNumber: "grey",
       rows: 0,
       numberProposed: ["_", "_", "_", "_"],
-      showDraggable: [false, false, false, false, true, true, true, true, true, true],
-      pan0: new Animated.Value,
     };
 
   }
@@ -128,17 +128,12 @@ class Dashboard extends Component {
   componentDidMount() {
     var self = this;
     setTimeout(function () {
-      self._toggleModalIndicator()
-    }, 2000);
+      self._toggleModalIndicator();
+    }, 1000);
 
   }
-  onCancel() {
-    console.log("CANCEL")
-    this.setState({ visible: false });
-  }
-
   _share(refname) {
-    this.setState({ winModalVisible: false })
+    this.setState({ showModalWin: false, showModalLose: false, showModalIndicator: false })
     takeSnapshot(this.refs[refname], this.state.value)
       .then(res => {
         Actions.share({ shareContent: res });
@@ -168,17 +163,9 @@ class Dashboard extends Component {
     }
     return res
   }
-  _solution() {
-    this._showStartModal()
-  }
 
   _replay() {
-
-
-
-
-
-
+    var self = this;
     this.refs._scrollView1.scrollTo({ x: 0, y: 0, Animated: true });
     this.refs._scrollView2.scrollTo({ x: 0, y: 0, Animated: true });
     this.setState({
@@ -201,6 +188,9 @@ class Dashboard extends Component {
         blesse: "C",
       }]
     });
+    setTimeout(function () {
+      self._toggleModalIndicator()
+    }, 500);
   }
 
   _campare(guessedNumber) {
@@ -231,12 +221,6 @@ class Dashboard extends Component {
       }
     }
     return res
-  }
-  _recyncSolution() {
-    Animated.spring(this.state.pan0, { toValue: { x: 0, y: 0 } }).start();
-    this.setState({
-      showDraggable: [true, true, true, true, true, true, true, true, true, true]
-    })
   }
 
   randomRGB = () => 100 + Math.random() * 85
@@ -292,7 +276,7 @@ class Dashboard extends Component {
           <Image style={styles.blockOK}
             source={require('../../images/burtton_red.png')}>
 
-            <Icon name="ios-checkbox-outline" color='#fff' size={40} ></Icon>
+            <Icon name="md-checkmark-circle" color='#fff' size={30} ></Icon>
           </Image>
         </TouchableOpacity>
       );
@@ -309,6 +293,49 @@ class Dashboard extends Component {
       );
     }
   }
+
+  _renderButtonReplay() {
+    var a = this.state.showReplay
+    if (!a) {
+
+      return (
+        <TouchableOpacity
+          onPress={() => this._confirm()}
+          style={styles.blockOK}>
+
+          <Image style={styles.blockOK}
+            source={require('../../images/burtton_red.png')}>
+            <Icon name="md-refresh-circle" color='#fff' size={30} ></Icon>
+          </Image>
+        </TouchableOpacity>
+      );
+    } else {
+
+      return (
+        <TouchableOpacity
+          onPress={() => this._replay()}
+          style={styles.blockReplay}>
+
+          <Image style={styles.blockReplay}
+            source={require('../../images/burtton_red.png')}>
+            <Text  style={styles.TextReplay} >Replay ?</Text>
+          </Image>
+        </TouchableOpacity>
+      );
+    }
+  }
+
+  _confirm() {
+    this.setState({
+        showReplay: true,
+      })
+      setTimeout(() => {
+
+    this.setState({
+        showReplay: false,
+      })
+        }, 5000);
+}
 
   _renderNumber(number) {
     var a = this.state.showNumber[number]
@@ -351,15 +378,14 @@ class Dashboard extends Component {
       return (
         <TouchableOpacity style={styles.viewCenter}
           onPress={() => this.hidePhoneView()}>
-          <Text style={styles.headerTitleDown} >></Text>
+          <Icon name="ios-arrow-dropright" color='#fff' size={30} ></Icon>
         </TouchableOpacity>
       );
     } else {
       return (
         <TouchableOpacity style={styles.viewCenter}
           onPress={() => this.showPhoneView()}>
-          <Text style={styles.headerTitleDown} >S
-                </Text>
+          <Icon name="ios-arrow-dropleft" color='#fff' size={30} ></Icon>
         </TouchableOpacity>
       );
     }
@@ -372,8 +398,9 @@ class Dashboard extends Component {
     var number = listNumberProposed[position]
     if (number !== "_") {
       var whoosh = new Sound('sound_back.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play()
-        whoosh.release();
+        whoosh.play((success) => {
+          whoosh.release();
+        });
       });
       showNumber[number] = true;
       listNumberProposed[position] = "_";
@@ -395,8 +422,9 @@ class Dashboard extends Component {
         showNumber: showNumber
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play()
-        whoosh.release();
+        whoosh.play((success) => {
+          whoosh.release();
+        });
       });
     }
     else if (numberProposed[1] === "_") {
@@ -408,8 +436,9 @@ class Dashboard extends Component {
         showNumber: showNumber
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play()
-        whoosh.release();
+        whoosh.play((success) => {
+          whoosh.release();
+        });
       });
     }
     else if (numberProposed[2] === "_") {
@@ -421,8 +450,9 @@ class Dashboard extends Component {
         showNumber: showNumber
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play()
-        whoosh.release();
+        whoosh.play((success) => {
+          whoosh.release();
+        });
       });
     }
     else if (numberProposed[3] === "_") {
@@ -434,8 +464,9 @@ class Dashboard extends Component {
         showNumber: showNumber
       })
       var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play()
-        whoosh.release();
+        whoosh.play((success) => {
+          whoosh.release();
+        });
       });
     }
   }
@@ -456,7 +487,7 @@ class Dashboard extends Component {
           showIndicator: true,
           colorText: "red"
         })
-        var whoosh = new Sound('sound_false.mp3', Sound.MAIN_BUNDLE, (error) => {
+        var whoosh = new Sound('sound_false.wav', Sound.MAIN_BUNDLE, (error) => {
           whoosh.play((success) => {
             whoosh.release();
           });
@@ -495,23 +526,21 @@ class Dashboard extends Component {
       myListNumbers: myListNumbers
     });
     if (resCampare.mort == 4) {
-      //Vibration.vibrate();
       this.setState({
-        backgroundColorScrollviewMe: '#1abc9c',
         showModalWin: true,
         round: this.state.round + 1,
         userWin: this.state.userWin + 1,
       })
       guesses = [];
       var whoosh = new Sound('sound_win.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play()
-        whoosh.release();
+        whoosh.play((success) => {
+          whoosh.release();
+        });
       });
       return true;
     } else {
       this.setState({
         rows: this.state.rows + 1,
-        backgroundColorScrollviewMe: 'grey'
       })
       return false;
     }
@@ -537,6 +566,7 @@ class Dashboard extends Component {
       }).start();
     this.setState({
       Amkhib: "",
+      VS: "",
       isHidePhoneView: true
     });
   }
@@ -553,7 +583,8 @@ class Dashboard extends Component {
         toValue: 15,  // Animate to opacity: 1, or fully opaque
       }).start();
     this.setState({
-      Amkhib: "Amkhib",
+      Amkhib: "Phone",
+      VS: "VS",
       isHidePhoneView: false
     });
   }
@@ -573,7 +604,7 @@ class Dashboard extends Component {
     });
     setTimeout(function () {
       self._toggleModalIndicator()
-    }, 1000);
+    }, 500);
   };
   _toggleModalLose() {
     var self = this;
@@ -584,7 +615,7 @@ class Dashboard extends Component {
     });
     setTimeout(function () {
       self._toggleModalIndicator()
-    }, 1000);
+    }, 500);
   };
   refreshNumber(myNumber) {
     this.setState({
@@ -596,212 +627,216 @@ class Dashboard extends Component {
     var self = this;
     return (
 
-      <Image ref="header" collapsable={false}
-        source={require('../../images/back.png')}
-        style={styles.container}
-      //source={require('../../images/screenEmpty.png')}
-      >
-
-        <ModalIndicator
-          animationType={"fade"}
-          visible={this.state.showModalIndicator}
-          toggleModalIndicator={this._toggleModalIndicator.bind(this)}
-          refreshNumber={this.refreshNumber.bind(this)}
-        />
-        <ModalWin
-          animationType={"fade"}
-          visible={this.state.showModalWin}
-          toggleModalWin={this._toggleModalWin.bind(this)}
-          share={this._share.bind(this)}
-        />
-        <ModalLose
-          animationType={"fade"}
-          visible={this.state.showModalLose}
-          toggleModalLose={this._toggleModalLose.bind(this)}
-          share={this._share.bind(this)}
-        />
-        <View style={[styles.containerHeader]}
-        //source={require('../../images/header.png')}
+      <View style={styles.flex} ref="header" collapsable={false}>
+        <Image
+          source={require('../../images/final_backgroundaccueil.png')}
+          style={styles.container}
+        //source={require('../../images/screenEmpty.png')}
         >
-          <View style={styles.subHeader1}>
-            <TouchableOpacity onPress={() => this.onPrevious()} style={styles.headerSettingShare}>
-              <Icon name="ios-arrow-back" color='#fff' size={40} >    </Icon>
-            </TouchableOpacity>
+
+          <ModalIndicator
+            animationType={"fade"}
+            visible={this.state.showModalIndicator}
+            toggleModalIndicator={this._toggleModalIndicator.bind(this)}
+            refreshNumber={this.refreshNumber.bind(this)}
+          />
+          <ModalWin
+            animationType={"fade"}
+            visible={this.state.showModalWin}
+            toggleModalWin={this._toggleModalWin.bind(this)}
+            share={this._share.bind(this)}
+            round={this.state.round}
+            userWin={this.state.userWin}
+            phoneWin={this.state.phoneWin}
+          />
+          <ModalLose
+            animationType={"fade"}
+            visible={this.state.showModalLose}
+            toggleModalLose={this._toggleModalLose.bind(this)}
+            share={this._share.bind(this)}
+            round={this.state.round}
+            userWin={this.state.userWin}
+            phoneWin={this.state.phoneWin}
+          />
+          <View style={[styles.containerHeader]}
+          //source={require('../../images/header.png')}
+          >
+            <View style={styles.subHeader1}>
+              <TouchableOpacity onPress={() => this.onPrevious()} style={styles.subHeaderLeft}>
+                <Icon name="ios-arrow-back" color='#fff' size={40} ></Icon>
+              </TouchableOpacity>
 
 
-            <Image
-              source={require('../../images/round.png')}
-              style={styles.containerRound}
-            //source={require('../../images/screenEmpty.png')}
-            >
-              <Text style={{ color: "white", fontSize: 25, fontWeight: 'bold' }}>{this.state.round}</Text>
-            </Image>
-
-
-            <View style={styles.containerNumbersColumnPlayer}>
-              <View style={styles.containerRowsColumnPlayer}>
-                <Icon name="ios-person" color='#fff' size={15} ></Icon>
-                <Text style={styles.headerTitleDown} > : {this.state.userWin}</Text>
-              </View>
-              <View style={styles.containerRowsColumnPlayer}>
-                <Icon name="ios-man" color='#fff' size={15} ></Icon>
-                <Text style={styles.headerTitleDown} > : {this.state.phoneWin}</Text>
-              </View>
-            </View>
-          </View>
-
-
-          <View style={styles.viewHeaderGame}>
-
-            <View style={styles.viewMarging} />
-            <Animated.View style={[styles.viewLeftHeader, { flex: this.state.flexLeft }]}>
-
-              <View style={styles.headerPlayer1}>
-                <Text style={styles.headerTitleDown} >ME ({this.state.myNumber})</Text>
-              </View>
-
-            </Animated.View>
-
-            <View style={styles.viewCenter}>
-              <Text style={styles.headerTitleDown} ></Text>
-            </View>
-
-            <Animated.View style={[styles.viewRightHeader, { flex: this.state.flexRight }]}>
-
-              <View style={styles.headerPlayer2}>
-                <Text style={styles.headerTitleDown} >{this.state.Amkhib}</Text>
+              <View style={styles.subHeaderCenter}>
+                <Image
+                  source={require('../../images/round.png')}
+                  style={styles.containerRound}
+                //source={require('../../images/screenEmpty.png')}
+                >
+                  <Text style={{ color: "white", fontSize: 25, fontWeight: 'bold' }}>{this.state.round}</Text>
+                </Image>
               </View>
 
-            </Animated.View>
-            <View style={styles.viewMarging} />
-          </View>
 
-
-          <View style={styles.viewGame}>
-
-            <View style={styles.viewMarging} />
-
-
-
-
-            <Animated.View style={[styles.viewLeft, { flex: this.state.flexLeft }]}>
-
-              <View style={[{
-                flex: 1
-              }]}>
-
-
-
-                <ScrollView ref="_scrollView1" collapsable={false} tabLabel='numbers' style={styles.tabView}>
-                  <ListView
-                    style={styles.tabView}
-                    enableEmptySections={true}
-                    showsVerticalScrollIndicator={true}
-
-                    onContentSizeChange={(w, h) => this.setState({ contentHeight: h })}
-                    onLayout={ev => this.setState({ scrollViewHeight1: ev.nativeEvent.layout.height + 30 })}
-
-                    dataSource={this.dataSource.cloneWithRows(this.state.myListNumbers)}
-                    renderRow={(rowData, sectionID, rowID) => this._renderNumbers(rowData, sectionID, rowID)}
-                  />
-                </ScrollView>
-              </View>
-            </Animated.View>
-
-
-            {this._renderHidePhoneView()}
-
-            <Animated.View style={[styles.viewRight, { flex: this.state.flexRight }]}>
-
-
-              <View style={[{
-                flex: 1
-              }]}>
-
-
-
-                <ScrollView ref="_scrollView2" collapsable={false} tabLabel='numbers' style={styles.tabView}>
-                  <ListView
-                    style={styles.tabView}
-                    enableEmptySections={true}
-                    showsVerticalScrollIndicator={true}
-
-                    onContentSizeChange={(w, h) => this.setState({ contentHeight: h })}
-                    onLayout={ev => this.setState({ scrollViewHeight2: ev.nativeEvent.layout.height + 30 })}
-
-                    dataSource={this.dataSource.cloneWithRows(this.state.phoneListNumbers)}
-                    renderRow={(rowData, sectionID, rowID) => this._renderNumbersPhone(rowData, sectionID, rowID)}
-                  />
-                </ScrollView>
-              </View>
-            </Animated.View>
-
-            <View style={styles.viewMarging} />
-          </View>
-
-        </View>
-        <View style={[styles.containerFooter]}
-        //source={require('../../images/footer.png')}
-        >
-          <View style={styles.containerFooterBox}>
-            <View style={[styles.box]}>
-              <View style={styles.containerNumbersColumn}>
-                <View style={styles.containerNumbersRow1}>
-                  <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
-                    onPress={() => this._pressProposedNumber(0)}>
-                    <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[0]}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
-                    onPress={() => this._pressProposedNumber(1)}>
-                    <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[1]}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
-                    onPress={() => this._pressProposedNumber(2)}>
-                    <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[2]}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
-                    onPress={() => this._pressProposedNumber(3)}>
-                    <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[3]}</Text>
-                  </TouchableOpacity>
-
+              <View style={styles.containerNumbersColumnPlayer}>
+                <View style={styles.containerRowsColumnPlayer}>
+                  <Icon name="md-contact" color='#fff' size={15} ></Icon>
+                  <Text style={styles.headerTitleDown} > : {this.state.userWin}</Text>
                 </View>
-                <View style={styles.containerNumbersRow2}>
-
-                  {this._renderNumber(0)}
-                  {this._renderNumber(1)}
-                  {this._renderNumber(2)}
-                  {this._renderNumber(3)}
-                  {this._renderNumber(4)}
-
-
-
-                  {this._renderButtonOK()}
-
-                </View>
-
-
-                <View style={styles.containerNumbersRow3}>
-
-                  {this._renderNumber(5)}
-                  {this._renderNumber(6)}
-                  {this._renderNumber(7)}
-                  {this._renderNumber(8)}
-                  {this._renderNumber(9)}
-                  <TouchableOpacity
-                    onPress={() => this._replay()}
-                    style={styles.blockOK}>
-
-                    <Image style={styles.blockOK}
-                      source={require('../../images/burtton_red.png')}>
-                      <Icon name="ios-repeat-outline" color='#fff' size={40} ></Icon>
-                    </Image>
-                  </TouchableOpacity>
+                <View style={styles.containerRowsColumnPlayer}>
+                  <Icon name="ios-ionitron" color='#fff' size={15} ></Icon>
+                  <Text style={styles.headerTitleDown} > : {this.state.phoneWin}</Text>
                 </View>
               </View>
             </View>
+
+
+            <View style={styles.viewHeaderGame}>
+
+              <View style={styles.viewMarging} />
+              <Animated.View style={[styles.viewLeftHeader, { flex: this.state.flexLeft }]}>
+
+                <View style={styles.headerPlayer1}>
+                  <Text style={styles.headerTitleDown} >User ({this.state.myNumber})</Text>
+                </View>
+
+              </Animated.View>
+
+              <View style={styles.viewCenter}>
+                <Text style={styles.headerTitleDown} > {this.state.VS} </Text>
+              </View>
+
+              <Animated.View style={[styles.viewRightHeader, { flex: this.state.flexRight }]}>
+
+                <View style={styles.headerPlayer2}>
+                  <Text style={styles.headerTitleDown} >{this.state.Amkhib}</Text>
+                </View>
+
+              </Animated.View>
+              <View style={styles.viewMarging} />
+            </View>
+
+
+            <View style={styles.viewGame}>
+
+              <View style={styles.viewMarging} />
+
+
+
+
+              <Animated.View style={[styles.viewLeft, { flex: this.state.flexLeft }]}>
+
+                <View style={[{
+                  flex: 1
+                }]}>
+
+
+
+                  <ScrollView ref="_scrollView1" collapsable={false} tabLabel='numbers' style={styles.tabView}>
+                    <ListView
+                      style={styles.tabView}
+                      enableEmptySections={true}
+                      showsVerticalScrollIndicator={true}
+
+                      onContentSizeChange={(w, h) => this.setState({ contentHeight: h })}
+                      onLayout={ev => this.setState({ scrollViewHeight1: ev.nativeEvent.layout.height + 30 })}
+
+                      dataSource={this.dataSource.cloneWithRows(this.state.myListNumbers)}
+                      renderRow={(rowData, sectionID, rowID) => this._renderNumbers(rowData, sectionID, rowID)}
+                    />
+                  </ScrollView>
+                </View>
+              </Animated.View>
+
+
+              {this._renderHidePhoneView()}
+
+              <Animated.View style={[styles.viewRight, { flex: this.state.flexRight }]}>
+
+
+                <View style={[{
+                  flex: 1
+                }]}>
+
+
+
+                  <ScrollView ref="_scrollView2" collapsable={false} tabLabel='numbers' style={styles.tabView}>
+                    <ListView
+                      style={styles.tabView}
+                      enableEmptySections={true}
+                      showsVerticalScrollIndicator={true}
+
+                      onContentSizeChange={(w, h) => this.setState({ contentHeight: h })}
+                      onLayout={ev => this.setState({ scrollViewHeight2: ev.nativeEvent.layout.height + 30 })}
+
+                      dataSource={this.dataSource.cloneWithRows(this.state.phoneListNumbers)}
+                      renderRow={(rowData, sectionID, rowID) => this._renderNumbersPhone(rowData, sectionID, rowID)}
+                    />
+                  </ScrollView>
+                </View>
+              </Animated.View>
+
+              <View style={styles.viewMarging} />
+            </View>
+
           </View>
-        </View>
-      </Image>
+          <View style={[styles.containerFooter]}
+          //source={require('../../images/footer.png')}
+          >
+            <View style={styles.containerFooterBox}>
+              <View style={[styles.box]}>
+                <View style={styles.containerNumbersColumn}>
+                  <View style={styles.containerNumbersRow1}>
+                    <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
+                      onPress={() => this._pressProposedNumber(0)}>
+                      <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[0]}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
+                      onPress={() => this._pressProposedNumber(1)}>
+                      <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[1]}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
+                      onPress={() => this._pressProposedNumber(2)}>
+                      <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[2]}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.blockEmpty, { backgroundColor: this.state.backgroundColorNumber }]}
+                      onPress={() => this._pressProposedNumber(3)}>
+                      <Text style={{ color: this.state.colorText, fontSize: 35, fontWeight: 'bold' }}>{this.state.numberProposed[3]}</Text>
+                    </TouchableOpacity>
+
+                  </View>
+                  <View style={styles.containerNumbersRow2}>
+
+                    {this._renderNumber(0)}
+                    {this._renderNumber(1)}
+                    {this._renderNumber(2)}
+                    {this._renderNumber(3)}
+                    {this._renderNumber(4)}
+
+
+
+                    {this._renderButtonOK()}
+
+                  </View>
+
+
+                  <View style={styles.containerNumbersRow3}>
+
+                    {this._renderNumber(5)}
+                    {this._renderNumber(6)}
+                    {this._renderNumber(7)}
+                    {this._renderNumber(8)}
+                    {this._renderNumber(9)}
+
+                    {this._renderButtonReplay()}
+
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Image>
+      </View>
     );
   }
 
@@ -878,17 +913,16 @@ class Dashboard extends Component {
     var newGuessLine = { data: { DATA_KEY: { guess: guess, allCorrect: allCorrect, colorCorrect: colorCorrect } } };
     guesses.push(newGuessLine);
     if (resCampare.mort == 4) {
-      //Vibration.vibrate();
       this.setState({
-        backgroundColorScrollviewPhone: '#1abc9c',
         showModalLose: true,
         round: this.state.round + 1,
         phoneWin: this.state.phoneWin + 1,
       })
       guesses = [];
       var whoosh = new Sound('sound_lose.wav', Sound.MAIN_BUNDLE, (error) => {
-        whoosh.play();
-        whoosh.release();
+        whoosh.play((success) => {
+          whoosh.release();
+        });
       });
     } else {
       this.setState({
@@ -951,6 +985,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  blockReplay: {
+    margin: 3,
+    width: width_window / 7,
+
+    height: width_window / 8,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   NumberListContainer: {
     flex: 1,
     height: 30,
@@ -971,7 +1014,7 @@ const styles = StyleSheet.create({
   },
   subHeader1: {
     width: width,
-    backgroundColor: 'grey',
+    backgroundColor: '#1b6a9f',
     justifyContent: 'space-between',
     alignItems: "center",
     flexDirection: 'row',
@@ -979,7 +1022,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 5,
     height: 50,
   },
-
+TextReplay: {
+        fontWeight: 'bold',
+        color: "#fff",
+        fontSize: 10,
+    },
   userContainer: {
     borderWidth: 1,
     borderColor: 'black',
@@ -1014,6 +1061,11 @@ const styles = StyleSheet.create({
     height: 30
   },
 
+  flex: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: "center",
+  },
   headerPlayer1: {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -1120,6 +1172,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'white'
   },
+  subHeaderLeft: {
+    marginLeft: 10,
+    flex: 1,
+  },
+  subHeaderCenter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  subHeaderRight: {
+    flex: 1,
+  },
   containerNumbersRow1: {
     flex: 1,
     flexDirection: 'row',
@@ -1146,6 +1210,7 @@ const styles = StyleSheet.create({
   },
   containerNumbersColumnPlayer: {
     width: 50,
+    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'

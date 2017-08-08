@@ -20,7 +20,7 @@ import {
     PublisherBanner,
     AdMobRewarded
 } from 'react-native-admob'
-class ModalWin extends Component {
+class ModalWinTime extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -60,7 +60,7 @@ class ModalWin extends Component {
         this.props.share("header");
     }
     start() {
-        this.props.toggleModalWin();
+        this.props.toggleModalWinTime();
     }
     render() {
         return (
@@ -90,12 +90,12 @@ class ModalWin extends Component {
 
                                 <Icon name="md-contact" color='#fff' size={40} ></Icon>
 
-                                <View style={styles.columnScore}>
-                                    <Text style={styles.Textscore }>  {this.props.userWin} : {this.props.phoneWin}  </Text>
-                                    <Text  style={styles.TextRound} >{this.props.round}</Text>
+                                <View style={styles.columnScoreWin}>
+                                    <Text style={styles.Textscore }>     {this.props.time}     </Text>
+                                    <Text  style={styles.TextRound} >  Round : {this.props.round}   </Text>
                                 </View>
 
-                                <Icon name="ios-ionitron" color='#fff' size={40} ></Icon>
+                                <Icon name="md-timer" color='#fff' size={40} ></Icon>
                             </View>
 
 
@@ -138,4 +138,4 @@ class ModalWin extends Component {
         );
     }
 }
-module.exports = ModalWin;
+module.exports = ModalWinTime;

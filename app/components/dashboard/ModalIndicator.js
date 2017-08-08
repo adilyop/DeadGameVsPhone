@@ -45,7 +45,7 @@ class ModalIndicator extends Component {
     }
 
     hide() {
-        this.props.toggleModalIndicator();
+        //this.props.toggleModalIndicator();
     }
     play() {
         var numberProposed = this.state.numberProposed;
@@ -67,7 +67,7 @@ class ModalIndicator extends Component {
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
                 whoosh.play((success) => {
-                whoosh.release();
+                    whoosh.release();
                 });
             });
         }
@@ -81,7 +81,7 @@ class ModalIndicator extends Component {
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
                 whoosh.play((success) => {
-                whoosh.release();
+                    whoosh.release();
                 });
             });
         }
@@ -95,7 +95,7 @@ class ModalIndicator extends Component {
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
                 whoosh.play((success) => {
-                whoosh.release();
+                    whoosh.release();
                 });
             });
         }
@@ -109,7 +109,7 @@ class ModalIndicator extends Component {
             })
             var whoosh = new Sound('sound_number.wav', Sound.MAIN_BUNDLE, (error) => {
                 whoosh.play((success) => {
-                whoosh.release();
+                    whoosh.release();
                 });
             });
         }
@@ -152,7 +152,7 @@ class ModalIndicator extends Component {
 
             var whoosh = new Sound('sound_back.wav', Sound.MAIN_BUNDLE, (error) => {
                 whoosh.play((success) => {
-                whoosh.release();
+                    whoosh.release();
                 });
             });
 
@@ -220,8 +220,6 @@ class ModalIndicator extends Component {
                                 {this._renderNumber(8)}
                                 {this._renderNumber(9)}
                             </View>
-
-
                         </View>
 
 
@@ -237,15 +235,12 @@ class ModalIndicator extends Component {
                     </Image>
 
 
-
-                    <View style={styles.containerFooter}>
-                        <AdMobBanner 
-                    bannerSize="Banner"
-                    adUnitID="ca-app-pub-1835572944842794/6748215105"
-                    testDeviceID="0123456789ABCDEF"
-                    didFailToReceiveAdWithError={this.bannerError} />
+                        <AdMobBanner
+                            bannerSize="Banner"
+                            adUnitID="ca-app-pub-1835572944842794/6748215105"
+                            testDeviceID="0123456789ABCDEF"
+                            didFailToReceiveAdWithError={this.bannerError} />
                     </View>
-                </View>
 
 
             </Modal>
@@ -256,6 +251,7 @@ const styles = StyleSheet.create({
 
 
     container: {
+            backgroundColor:'rgba(500, 500, 500, 0.7)',
         flex: 1,
         height: height,
         width: width,
@@ -264,8 +260,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     containerHeader: {
-        backgroundColor: 'rgba(500,500, 500, 0.2)',
-        height: height / 5,
+        height: height / 7,
         width: width,
     },
     containerModal: {
@@ -274,8 +269,16 @@ const styles = StyleSheet.create({
         resizeMode: "stretch",
         flexDirection: 'column'
     },
+    footer: {
+        position: 'absolute',
+        height: 80,
+        left: 0,
+        top: height_window - 80,
+        width: width,
+        backgroundColor: 'red',
+    },
     containerFooter: {
-        backgroundColor: 'rgba(500,500, 500, 1)',
+        backgroundColor: 'red',
         height: height / 5,
         width: width,
     },
@@ -305,7 +308,7 @@ const styles = StyleSheet.create({
         width: 70,
         borderRadius: 10,
         height: 40,
-        backgroundColor: '#a76a6a',
+        backgroundColor: '#a36034',
         justifyContent: 'center',
         alignItems: 'center'
     },

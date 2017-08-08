@@ -14,6 +14,12 @@ import {
 import { StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
+import {
+    AdMobBanner,
+    AdMobInterstitial,
+    PublisherBanner,
+    AdMobRewarded
+} from 'react-native-admob'
 var {width, height} = Dimensions.get('window');
 import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 var width_window = width;
@@ -177,7 +183,7 @@ class HowToPlay extends Component {
                         HOW TO PLAY
                     </Text>
                     <TouchableOpacity  style={styles.settingShare}>
-                        <Icon name="ios-arrow-back" color='#2c3e50' size={40} > </Icon>
+                        <Icon name="ios-arrow-back" color='#1b6a9f' size={40} > </Icon>
                     </TouchableOpacity>
                 </View>
                 <ScrollableTabView
@@ -185,7 +191,7 @@ class HowToPlay extends Component {
                     renderTabBar={() =>
                         <ScrollableTabBar
                             backgroundColor={'white'}
-                            activeTextColor={'#2c3e50'}
+                            activeTextColor={'#1b6a9f'}
                             inactiveTextColor={'grey'}
                             underlineStyle={styles.underlineStyle}
                         />
@@ -198,6 +204,13 @@ class HowToPlay extends Component {
                         {this.francais()}
                     </View>
                 </ScrollableTabView>
+
+
+                        <AdMobBanner 
+                    bannerSize="Banner"
+                    adUnitID="ca-app-pub-1835572944842794/6748215105"
+                    testDeviceID="0123456789ABCDEF"
+                    didFailToReceiveAdWithError={this.bannerError} />
                 <View style={styles.containerFooterError}></View>
             </View>
         );
@@ -261,12 +274,12 @@ const styles = StyleSheet.create({
     },
 
     headerTitle: {
-        color: '#90949c',
+        color: '#62a3cf',
         fontWeight: 'bold',
-        fontSize: 30,
+        fontSize: 25,
     },
     underlineStyle: {
-        backgroundColor: '#2c3e50',
+        backgroundColor: '#1b6a9f',
         height: 2
     },
     subHeader1: {
@@ -274,7 +287,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: 'row',
         height: 60,
-        backgroundColor: '#2c3e50'
+        backgroundColor: '#1b6a9f'
     },
 });
 
