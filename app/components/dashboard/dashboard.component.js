@@ -126,10 +126,12 @@ class Dashboard extends Component {
   }
 
   _share(refname) {
+    var self = this;
     this.setState({ showModalWinTime: false })
     takeSnapshot(this.refs[refname], this.state.value)
       .then(res => {
         Actions.share({ shareContent: res });
+        self._replay();
       })
       .catch(error => (alert(error)));
   }
@@ -532,9 +534,7 @@ class Dashboard extends Component {
   }
 
   start() {
-    this.setState({ startModalVisible: false })
     this._replay();
-    this._timer(1000);
   }
   _toggleModalWinTime() {
     var self = this;

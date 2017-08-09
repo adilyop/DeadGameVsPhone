@@ -97,7 +97,7 @@ class Dashboard extends Component {
         numberProposed: "Num",
         mort: "B",
         blesse: "C",
-      }],
+      }],// todo remove 2 list
       phoneListNumbers: [{
         numberProposed: "Num",
         mort: "B",
@@ -129,7 +129,7 @@ class Dashboard extends Component {
     var self = this;
     setTimeout(function () {
       self._toggleModalIndicator();
-    }, 1000);
+    }, 500);
 
   }
   _share(refname) {
@@ -137,6 +137,33 @@ class Dashboard extends Component {
     takeSnapshot(this.refs[refname], this.state.value)
       .then(res => {
         Actions.share({ shareContent: res });
+        ////////////////////
+        var self = this;
+        this.refs._scrollView1.scrollTo({ x: 0, y: 0, Animated: true });
+        this.refs._scrollView2.scrollTo({ x: 0, y: 0, Animated: true });
+        this.setState({
+          rows: 0,
+          second: 0,
+          curTime: "00:00:00"
+        })
+        var randomNumber = this.generateNumber();
+        this.setState({
+          showNumber: [true, true, true, true, true, true, true, true, true, true],
+          numberProposed: ["_", "_", "_", "_"],
+          backgroundColorNumber: "grey",
+          randomNumber: "" + randomNumber,
+          myListNumbers: [{
+            numberProposed: "Num",
+            mort: "B",
+            blesse: "C",
+          }],
+          phoneListNumbers: [{
+            numberProposed: "Num",
+            mort: "B",
+            blesse: "C",
+          }]
+        });
+        ///////////////////////
       })
       .catch(error => (alert(error)));
   }
@@ -169,6 +196,8 @@ class Dashboard extends Component {
     this.refs._scrollView1.scrollTo({ x: 0, y: 0, Animated: true });
     this.refs._scrollView2.scrollTo({ x: 0, y: 0, Animated: true });
     this.setState({
+      showNumber: [true, true, true, true, true, true, true, true, true, true],
+      numberProposed: ["_", "_", "_", "_"],
       rows: 0,
       second: 0,
       curTime: "00:00:00"
@@ -318,7 +347,7 @@ class Dashboard extends Component {
 
           <Image style={styles.blockReplay}
             source={require('../../images/burtton_red.png')}>
-            <Text  style={styles.TextReplay} >Replay ?</Text>
+            <Text style={styles.TextReplay} >Replay ?</Text>
           </Image>
         </TouchableOpacity>
       );
@@ -327,15 +356,15 @@ class Dashboard extends Component {
 
   _confirm() {
     this.setState({
-        showReplay: true,
-      })
-      setTimeout(() => {
+      showReplay: true,
+    })
+    setTimeout(() => {
 
-    this.setState({
+      this.setState({
         showReplay: false,
       })
-        }, 5000);
-}
+    }, 5000);
+  }
 
   _renderNumber(number) {
     var a = this.state.showNumber[number]
@@ -549,7 +578,6 @@ class Dashboard extends Component {
   start() {
     this.setState({ startModalVisible: false })
     this._replay();
-    this._timer(1000);
   }
 
   hidePhoneView() {
@@ -1022,11 +1050,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 5,
     height: 50,
   },
-TextReplay: {
-        fontWeight: 'bold',
-        color: "#fff",
-        fontSize: 10,
-    },
+  TextReplay: {
+    fontWeight: 'bold',
+    color: "#fff",
+    fontSize: 10,
+  },
   userContainer: {
     borderWidth: 1,
     borderColor: 'black',

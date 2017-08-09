@@ -32,7 +32,7 @@ export default class ShareSocial extends Component {
         });
     }
     onPrevious() {
-        Actions.pop();
+        Actions.pop()
     };
     render() {
         let shareOptions = {
